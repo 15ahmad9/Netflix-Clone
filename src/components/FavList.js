@@ -83,4 +83,5 @@ function FavList() {
 //     </div> 
 //   );
 }
+
 export default FavList;
