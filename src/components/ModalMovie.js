@@ -1,49 +1,73 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 function ModalMovie(props) {
-  const posterUrl = `https://www.themoviedb.org/t/p/w220_and_h330_face`;
+  const [comment, setComment] = useState('');
 
-  const [comment, setComment] = useState("");
+  const handleAddToFavorite = () => {
+    const serverURL = `${process.env.REACT_APP_serverURL}/movie/addMovie`;
+    const releaseDate = Date.parse(props.movie.release_date);
+    const movieData = {
+      title: props.movie.title,
+      release_date: releaseDate,
+      overview: props.movie.overview,
+    };
 
-  const addToFav = (item) => {
-    
-    const serverURL = `${process.env.REACT_APP_serverURL}/addToFav`;
-    let obj ={... props.item, comment:comment}
-    axios.post(serverURL, obj)
-      .then(response => {
-        console.log(response.data)
+    axios
+      .post(serverURL, movieData)
+      .then((response) => {
+        console.log(response.data);
+
       })
       .catch((error) => {
-        console.log(error)
-      })
+        console.log(error);
 
-  }
-
+      });
 
 
+    setComment('');// Reset comment 
+    props.setShowModal(false);
+  };
+
+  const handleCloseModal = () => {
+    props.setShowModal(false);
+  };
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+  const poster_pathURL = "http://image.tmdb.org/t/p/w500/"
 
   return (
-    <>
-      <Modal show={props.showFlag} onHide={props.handleClose} >
-        <Modal.Header closeButton>
-          <Modal.Title>{props.item.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Image src={posterUrl + props.item.poster_path} style={{ width: '50%', height: '200px', margin: '1.5% 25% 4% 25%' }}></Image>
-          {props.item.overview}<br></br>
-          <p style={{ margin: '3% 0 1.5% 0', textAlign:'center', fontWeight:'lighter',fontSize:'13px'}}>Add Your Comment</p>
-          <input type='text' style={{ width: '100%', margin: '0 1%', border:'none', outline:'none' }} onChange={(i) => setComment(i.target.value)}></input>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={props.handleClose}>
-            Close
-          </Button>
-          <Button variant="success" onClick={addToFav}>
-            Add
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Modal show={props.showModal} onHide={handleCloseModal}>
+      <Modal.Navbar closeButton>
+        <Modal.Title>{props.movie.title}</Modal.Title>
+      </Modal.Navbar>
+      <Modal.Body>
+        <img src={poster_pathURL+props.movie.poster_path} alt={props.movie.title} width='100%' />
+        <p>{props.movie.overview}</p>
+        <Form.Group controlId="comment">
+          <Form.Label>Comment</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={comment}
+            onChange={handleCommentChange}
+          />
+        </Form.Group>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleCloseModal}>
+          Close
+        </Button>
+        <Button variant="dark" onClick={handleAddToFavorite}>
+          Add to Favorites
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 

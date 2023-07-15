@@ -1,35 +1,42 @@
 import { useEffect, useState } from 'react'
-import MovieList from './MovieList';
 
-
+import MovieList from './MovieList'
 function Home() {
 
-    const [movieData, setMovieData] = useState([])
+    const [moviesData, setMoviesData] = useState([])
 
-    const getTrendingMovies = () => {
+    const getAllMovies = () => {
         const serverURL = `${process.env.REACT_APP_serverURL}/trending`;
-
         fetch(serverURL)
             .then(response => {
                 response.json().then(data => {
                     console.log(data)
-                    setMovieData(data);
+                    setMoviesData(data)
 
                 })
             })
     }
 
-
     useEffect(()=>{
-        getTrendingMovies()
+        getAllMovies()
     },[])
+
+
 
     return (
         <>
-        
-        <MovieList dataInHome={movieData}/>
+           {/* <h1>Home</h1> */}
+           {/* {//test:
+          moviesData.map(movie => (
+        <div key={movie.id}>{movie.title}</div>
+      ))}  */}
+
+
+      {// render MovieList componant and pass props
+       }
+      <MovieList movies={moviesData}/>  
         </>
-    );
+    )
 }
 
 export default Home;
