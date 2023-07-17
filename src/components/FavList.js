@@ -87,4 +87,5 @@ function FavList(props) {
     </div> 
   );
 }
+
 export default FavList;
