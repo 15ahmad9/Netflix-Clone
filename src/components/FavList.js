@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-// import ModalUpdate from './ModalUpdate';
+import ModalUpdate from './ModalUpdate';
 
-function FavList() {
+function FavList(props) {
   const [movies, setMovies] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -12,7 +12,11 @@ function FavList() {
   useEffect(() => {
     // Fetch the favorite movies data from the server
 
-    const serverURL = `${process.env.REACT_APP_serverURL}/getMovies`;
+    // const serverURL = `${process.env.REACT_APP_serverURL}/getMovies`;
+    
+    const serverURL = `http://localhost:3000/trending`;
+    // const serverURL = `https://image.tmdb.org/t/p/original/${props.data.poster_path}`;
+
     axios
       .get(serverURL)
       .then((response) => { 
@@ -40,47 +44,47 @@ function FavList() {
     setSelectedMovie(movie);
     setShowModal(true);
   };
-  const poster_pathURL = "http://image.tmdb.org/t/p/w500/";
-//   return (
-//     <div>
-//       <h1>Favorite List</h1>
-//       <div className="row">
-//         {movies.map((movie) => (
-//           <div className="col-md-4" key={movie.id}>
-//             <Card style={{ marginBottom: '20px' }}>
-//               <Card.Img variant="top" src={poster_pathURL + movie.poster_path} />
-//               <Card.Body>
-//                 <Card.Title>{movie.title}</Card.Title>
-//                 <Card.Text>
-//                   <p>{movie.overview}</p>
-//                   <p>Comment: {movie.comment}</p> 
-//                 </Card.Text>
-//                 <Button
-//                   variant="danger"
-//                   onClick={() => handleDelete(movie.id)}
-//                 >
-//                   Delete
-//                 </Button>
-//                 <Button
-//                   variant="primary"
-//                   onClick={() => handleUpdate(movie)}
-//                 >
-//                   Update
-//                 </Button>
-//               </Card.Body>
-//             </Card>
-//           </div>
-//         ))}
-//       </div>
-//       {selectedMovie && (
-//         <ModalUpdate
-//           movie={selectedMovie}
-//           showModal={showModal}
-//           setShowModal={setShowModal}
-//           setMovies={setMovies}
-//         />
-//       )}
-//     </div> 
-//   );
+  const poster_pathURL = `https://image.tmdb.org/t/p/original/${props.data.poster_path}`;
+  return (
+    <div>
+      <h1>Favorite List</h1>
+      <div className="row">
+        {movies.map((movie) => (
+          <div className="col-md-4" key={movie.id}>
+            <Card style={{ marginBottom: '20px' }}>
+              <Card.Img variant="top" src={poster_pathURL} />
+              <Card.Body>
+                <Card.Title>{movie.title}</Card.Title>
+                <Card.Text>
+                  <p>{movie.overview}</p>
+                  <p>Comment: {movie.comment}</p> 
+                </Card.Text>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDelete(movie.id)}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => handleUpdate(movie)}
+                >
+                  Update
+                </Button>
+              </Card.Body>
+            </Card>
+          </div>
+        ))}
+      </div>
+      {selectedMovie && (
+        <ModalUpdate
+          movie={selectedMovie}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          setMovies={setMovies}
+        />
+      )}
+    </div> 
+  );
 }
 export default FavList;

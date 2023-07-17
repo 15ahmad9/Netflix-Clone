@@ -1,8 +1,9 @@
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/Navbar';
 import {Routes , Route} from 'react-router-dom';
 import Home from './components/Home';
 import FavList from './components/FavList';
+import './App.css';
 
 function App() {
   return (
@@ -17,3 +18,6 @@ function App() {
 }
 
 export default App;
+
+
+
