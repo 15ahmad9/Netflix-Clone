@@ -59,16 +59,10 @@ function FavList(props) {
                   <p>{movie.overview}</p>
                   <p>Comment: {movie.comment}</p> 
                 </Card.Text>
-                <Button
-                  variant="danger"
-                  onClick={() => handleDelete(movie.id)}
-                >
+                <Button variant="danger" onClick={() => handleDelete(movie.id)} >
                   Delete
                 </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => handleUpdate(movie)}
-                >
+                <Button variant="primary" onClick={() => handleUpdate(movie)} >
                   Update
                 </Button>
               </Card.Body>
